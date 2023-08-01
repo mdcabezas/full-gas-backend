@@ -1,19 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const { newUser, notRoute, getSignin, getUserAuthenticate } = require('../controllers/users.controller');
+const { signUp, notRoute, signIn, getUserAuthenticate } = require('../controllers/users.controller');
 const { isAuth } = require('../middlewares/auth.middleware');
 const { queryReport } = require('../middlewares/log.middleware');
 
-// Register New User
-router.post('/usuarios', queryReport, newUser);
+// Signup
+router.post('/signup', queryReport, signUp);
 
-// Authenticate User
-router.post('/login', queryReport, getSignin);
+// Signin
+router.post('/signin', queryReport, signIn);
 
 // Get user authenticate
-router.get('/usuarios', queryReport, isAuth, getUserAuthenticate);
+router.get('/usuarios/:id', queryReport, isAuth, getUserAuthenticate);
 
 // Not route
-router.get('*', queryReport, notRoute);
+//router.get('*', queryReport, notRoute);
 
 module.exports = router;

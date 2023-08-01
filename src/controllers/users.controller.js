@@ -1,19 +1,18 @@
 const jwt = require("jsonwebtoken");
 const { addUser, getUser, verifyCredentials } = require('../models/user.model');
 
-const newUser = async (req, res) => {
-  console.log(req.body)
+const signUp = async (req, res) => {
   addUser(req.body)
   res.status(201).json({ code: 201, message: "Usuario ingresado correctamente" });
 };
 
 const getUserAuthenticate = async (req, res) => {
-  const { email } = req.body;
-  const item = await getUser(email);
+  const { id } = req.params;
+  const item = await getUser(id);
   res.json(item);
 };
 
-const getSignin = async (req, res) => {
+const signIn = async (req, res) => {
   try {
     const { email, password } = req.body
     await verifyCredentials(email, password)
@@ -29,4 +28,4 @@ const notRoute = (req, res) => {
   res.status(404).json({ code: 404, message: "Esta ruta no existe" })
 };
 
-module.exports = { newUser, notRoute, getSignin, getUserAuthenticate };
+module.exports = { signUp, notRoute, signIn, getUserAuthenticate };

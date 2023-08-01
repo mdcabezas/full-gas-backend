@@ -1,10 +1,10 @@
 const bcrypt = require('bcrypt');
 const { pool } = require('../config/db.config');
 
-const getUser = async (email) => {
+const getUser = async (id) => {
   try {
-    const query = "SELECT * from  usuarios WHERE email = $1"
-    const values = [email]
+    const query = "SELECT * from  usuarios WHERE id = $1"
+    const values = [id]
     const { rows } = await pool.query(query, values)
     return { email: rows[0].email, rol: rows[0].rol, lenguage: rows[0].lenguage }
   } catch (error) {
