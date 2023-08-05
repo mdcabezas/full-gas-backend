@@ -27,11 +27,11 @@ const verifyCredentials = async (email, password) => {
   }
 }
 
-const addUser = async ({ email, password, rol, lenguage }) => {
+const addUser = async ({ email, nombre, password:contrasena }) => {
   try {
-    const passwordEncrypted = bcrypt.hashSync(password, 10)
-    const query = "INSERT INTO usuarios VALUES (DEFAULT, $1, $2, $3, $4)"
-    const values = [email, passwordEncrypted, rol, lenguage]
+    const passwordEncrypted = bcrypt.hashSync(contrasena, 10)
+    const query = "INSERT INTO usuarios VALUES (DEFAULT, $1, $2, $3, DEFAULT)"
+    const values = [nombre, email, passwordEncrypted]
     await pool.query(query, values)
     return query
   } catch (error) {

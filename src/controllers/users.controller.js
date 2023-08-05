@@ -24,8 +24,4 @@ const signIn = async (req, res) => {
   }
 }
 
-const notRoute = (req, res) => {
-  res.status(404).json({ code: 404, message: "Esta ruta no existe" })
-};
-
-module.exports = { signUp, notRoute, signIn, getUserAuthenticate };
+module.exports = { signUp, signIn, getUserAuthenticate };

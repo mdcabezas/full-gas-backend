@@ -5,7 +5,7 @@ const { isAuth } = require('../middlewares/auth.middleware');
 const { queryReport } = require('../middlewares/log.middleware');
 
 // Create
-router.post('/', queryReport, create);
+router.post('/', queryReport, isAuth, create);
 
 // Get by All
 router.get('/', queryReport, getAll);
