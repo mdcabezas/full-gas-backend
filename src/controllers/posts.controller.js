@@ -10,20 +10,20 @@ const create = async (req, res) => {
   try {
     const reqBody = req.body;
      const item = await createPost(reqBody);
-     res.status(201).json({ code: 201, message: "Publicacion creada con exito", data: item });
+     return res.status(201).json({ code: 201, message: "Publicacion creada con exito", data: item });
   } catch (error) {
     console.log(error)
-    res.status(error.code || 500).send(error)
+    return res.status(error.code || 500).send(error)
   }
 };
 
 const getAll = async (req, res) => {
   try {
     const item = await getAllPosts();
-    res.status(200).json({ code: 200, message: "getAllPosts", data: item });
+    return res.status(200).json({ code: 200, message: "getAllPosts", data: item });
   } catch (error) {
     console.log(error)
-    res.status(error.code || 500).send(error)
+    return res.status(error.code || 500).send(error)
   }
 };
 
@@ -31,10 +31,10 @@ const getById = async (req, res) => {
   try {
     const { id } = req.params;
     const item = await getByIdPosts(id);
-    res.json({ code: 200, message: "getByIdPosts", data: item });
+    return res.json({ code: 200, message: "getByIdPosts", data: item });
   } catch (error) {
     console.log(error)
-    res.status(error.code || 500).send(error)
+    return res.status(error.code || 500).send(error)
   }
 };
 
@@ -43,10 +43,10 @@ const updateById = async (req, res) => {
     const { id } = req.params;
     const reqBody = req.body;
     const item = await updateByIdPosts(id, reqBody);
-    res.json({ code: 200, message: "updateByIdPosts", data: item });
+    return res.json({ code: 200, message: "updateByIdPosts", data: item });
   } catch (error) {
     console.log(error)
-    res.status(error.code || 500).send(error)
+    return res.status(error.code || 500).send(error)
   }
 };
 
@@ -60,10 +60,10 @@ const deleteById = async (req, res) => {
     if(!Array.isArray(resultPublicacion)){
      return res.status(500).json({ code: 500, message: "Ops!.Comuniquese con la mesa de ayuda", error: resultPublicacion });
     }
-    res.status(200).json({ code: 200, message: "Registro eliminado exitosamente", data: resultPublicacion });
+    return res.status(200).json({ code: 200, message: "Registro eliminado exitosamente", data: resultPublicacion });
   } catch (error) {
     console.log(error)
-    res.status(error.code || 500).send(error)
+    return res.status(error.code || 500).send(error)
   }
 };
 
