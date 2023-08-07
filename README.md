@@ -1,9 +1,9 @@
 ### Acceso
 
-| Método | Endpoint       | Descripción        | Body (Cuerpo de la solicitud)                                                         | Headers (Encabezados de la solicitud) |
-|--------|----------------|--------------------|---------------------------------------------------------------------------------------|---------------------------------------|
-| POST   | /signup        | Crear usuario      | { "nombre":"Rodrigo Rodriguez","email":"rrodriguez@ejemplo.com","password":"123456" } | Content-Type: application/json        |
-| POST   | /signin        | Autenticar usuario | { "email":"rrodriguez@ejemplo.com","password":"123456" }                              | Content-Type: application/json        |
+| Método | Endpoint       | Descripción                               | Body (Cuerpo de la solicitud)                                                                                                                                            | Headers (Encabezados de la solicitud)                         |
+|--------|----------------|-------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------|
+| POST   | /signup        | Crear usuario                             | { "nombre":"Rodrigo Rodriguez","email":"rrodriguez@ejemplo.com","password":"123456" }                                                                                    | Content-Type: application/json                                |
+| POST   | /signin        | Autenticar usuario                        | { "email":"rrodriguez@ejemplo.com","password":"123456" }                                                                                                                 | Content-Type: application/json                                |
 
 ### Publicaciones
 
