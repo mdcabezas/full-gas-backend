@@ -1,23 +1,12 @@
 const bcrypt = require('bcrypt');
 const { pool } = require('../config/db.config');
 
-const getUser = async (id) => {
-  try {
-    const query = "SELECT * from  usuarios WHERE id = $1"
-    const values = [id]
-    const { rows } = await pool.query(query, values)
-    return { email: rows[0].email, rol: rows[0].rol, lenguage: rows[0].lenguage }
-  } catch (error) {
-    console.log(error)
-    return (error)
-  }
-};
-
 const verifyCredentials = async (email, password) => {
   try {
     const values = [email]
     const consulta = "SELECT * FROM usuarios WHERE email = $1"
     const { rows: [usuario], rowCount } = await pool.query(consulta, values)
+
     const { password: passwordEncrypted } = usuario
     const passwordPass = bcrypt.compareSync(password, passwordEncrypted)
     if (!passwordPass || !rowCount)
@@ -39,5 +28,4 @@ const addUser = async ({ email, nombre, password:contrasena }) => {
   }
 };
 
-
-module.exports = { addUser, getUser, verifyCredentials };
+module.exports = { addUser, verifyCredentials };

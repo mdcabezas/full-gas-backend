@@ -1,15 +1,9 @@
 const jwt = require("jsonwebtoken");
-const { addUser, getUser, verifyCredentials } = require('../models/user.model');
+const { addUser, verifyCredentials } = require('../models/user.model');
 
 const signUp = async (req, res) => {
   addUser(req.body)
   return res.status(201).json({ code: 201, message: "Usuario ingresado correctamente" });
-};
-
-const getUserAuthenticate = async (req, res) => {
-  const { id } = req.params;
-  const item = await getUser(id);
-  return res.json(item);
 };
 
 const signIn = async (req, res) => {
@@ -24,4 +18,6 @@ const signIn = async (req, res) => {
   }
 }
 
-module.exports = { signUp, signIn, getUserAuthenticate };
+const profile = async (req, res) => res.send("Endpoint Profile")
+
+module.exports = { signUp, signIn, profile };
