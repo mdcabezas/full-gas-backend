@@ -7,7 +7,7 @@ const isAuth = async (req, res, next) => {
 
         const Authorization = req.header("Authorization");
         const token = Authorization.split("Bearer ")[1];
-        const { email } = jwt.verify(token, "Clave_Muy_Secreta_,_Muy_Segura_y_Muy_Larga");
+        const { email } = jwt.verify(token, process.env.SECRET_JWT);
 
         if (!email) {
             throw new Error("No tienes permisos");

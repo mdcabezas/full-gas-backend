@@ -7,12 +7,13 @@ const verifyCredentials = async (email, password) => {
     const consulta = "SELECT * FROM usuarios WHERE email = $1"
     const { rows: [usuario], rowCount } = await pool.query(consulta, values)
 
+    if (!rowCount) return { code: 404, message: "Usuario no encontrado" }
     const { password: passwordEncrypted } = usuario
     const passwordPass = bcrypt.compareSync(password, passwordEncrypted)
-    if (!passwordPass || !rowCount)
-      throw { code: 401, message: "Email o contraseña incorrecta" }
+    if (!passwordPass) return { code: 401, message: "Email o contraseña incorrecta" }
+    return { code: 200, user: usuario }
   } catch (error) {
-    return (error)
+    return { code: 500, message: error }
   }
 }
 
@@ -22,9 +23,9 @@ const addUser = async ({ email, nombre, password:contrasena }) => {
     const query = "INSERT INTO usuarios VALUES (DEFAULT, $1, $2, $3, DEFAULT)"
     const values = [nombre, email, passwordEncrypted]
     await pool.query(query, values)
-    return query
+    return { code: 201, message: "Usuario creado exitosamente" }
   } catch (error) {
-    return (error)
+    return { code: 500, message: error }
   }
 };
 

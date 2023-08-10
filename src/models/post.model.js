@@ -1,20 +1,17 @@
 
 const { pool } = require('../config/db.config');
 
-// const getPost = async (id) => {
-//   try {
-//     const query = "SELECT * from  usuarios WHERE id = $1"
-//     /*SELECT pub.titulo, pub.descripcion, prod.precio, prod.formato, prod.marca, prod.tipo, prod.imagen  
-//     FROM publicaciones AS pub INNER JOIN productos AS prod 
-//     ON pub.producto_id = prod.id; */
-//     const values = [id]
-//     const { rows } = await pool.query(query, values)
-//     return { email: rows[0].email, rol: rows[0].rol, lenguage: rows[0].lenguage }
-//   } catch (error) {
-//     console.log(error)
-//     return (error)
-//   }
-// };
+const getByIdPosts = async (id) => {
+  try {
+    const idPost = "SELECT pub.titulo, pub.descripcion, prod.precio, prod.formato, prod.marca, prod.tipo, prod.imagen FROM publicaciones AS pub INNER JOIN productos AS prod ON pub.producto_id = prod.id WHERE pub.id = $1"
+    const valuesIdPost = [id]
+    const { rows: resultIdPost } = await pool.query(idPost, valuesIdPost)
+    return resultIdPost
+  } catch (error) {
+    console.log(error)
+    return (error)
+  }
+};
 
 
 const createPost = async ({ email, titulo, descripcion, precio, formato, marca, tipo, imagen }) => {
@@ -57,7 +54,7 @@ const getAllPosts = async () => {
   }
 };
 
-const getByIdPosts = () => console.log("getByIdPosts")
+
 
 const updateByIdPosts = async (idPublicacion, 
   { titulo: tituloPublicacion,

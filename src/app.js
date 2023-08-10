@@ -1,11 +1,14 @@
+require('dotenv').config()
 const express = require("express");
+const app = express();
 const cors = require("cors");
 const morgan = require("morgan");
-const app = express();
+app.disable("x-powered-by");
 
 // Require the routes
 const usersRoutes = require("./routes/users.routes.js");
 const postsRoutes = require("./routes/posts.routes.js");
+const productsRoutes = require("./routes/products.routes.js");
 
 //Request Logs
 app.use(morgan((tokens, req, res) => {
@@ -27,6 +30,7 @@ app.use(express.json())
 // Add routes
 app.use("/", usersRoutes);
 app.use("/posts", postsRoutes);
+app.use("/products", productsRoutes);
 app.use('*', (_, res) => res.status(404).json({ code: 404, message: "Esta ruta no existe" }));
 
 module.exports = app;
