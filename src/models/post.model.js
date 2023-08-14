@@ -51,31 +51,16 @@ const getAllPosts = async () => {
   }
 };
 
-const updateByIdPosts = async (idPublicacion, 
-  { titulo: tituloPublicacion,
-     descripcion: descripcionPublicacion,
-      precio: precioProducto,
-       formato: formatoProducto,
-        marca: marcaProducto,
-         tipo: tipoProducto,
-          imagen: imagenProducto }) => {
+const updateByIdPosts = async (idPublicacion,  { titulo, descripcion, producto_id }) => {
   try {
 
-    await pool.query('BEGIN');
-
     // Actualizar titulo y descripcion en la tabla "productos"
-    const queryPublicacion = "UPDATE publicaciones SET (titulo, descripcion) = ($1, $2) WHERE id = $3 RETURNING producto_id"
-    const valuesPublicacion = [tituloPublicacion, descripcionPublicacion, idPublicacion]
-    const { rows: [{ producto_id }] } = await pool.query(queryPublicacion, valuesPublicacion);
+    const queryPublicacion = "UPDATE publicaciones SET (titulo, descripcion, producto_id) = ($1, $2, $3) WHERE id = $4 RETURNING producto_id"
+    const valuesPublicacion = [ titulo, descripcion, producto_id , idPublicacion]
+    const { rows } = await pool.query(queryPublicacion, valuesPublicacion);
 
-    // Actualizar las datos del producto relacionados con la publicacion actualizada
-    const queryProducto = "UPDATE productos SET (precio, marca, formato, tipo, imagen) = ($1, $2, $3, $4, $5) WHERE id = $6" 
-    const valuesProducto = [precioProducto, marcaProducto, formatoProducto, tipoProducto, imagenProducto, producto_id]
-    await pool.query(queryProducto, valuesProducto);
-
-    await pool.query('COMMIT');
     // const { rows: resultPublicacion, rowCount:publicacionesActualizadas } = await pool.query(deleteSoftPublicacion, valuePublicacion)
-    return []
+    return rows
   } catch (error) {
     await pool.query('ROLLBACK');
     return (error)
