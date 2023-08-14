@@ -41,7 +41,7 @@ const createPost = async (idUsuario, { titulo, descripcion, producto_id }) => {
 
 const getAllPosts = async () => {
   try {
-    const query = "SELECT pub.titulo, pub.descripcion, prod.precio, prod.formato, prod.marca, prod.tipo, prod.imagen FROM publicaciones AS pub INNER JOIN productos AS prod ON pub.producto_id = prod.id WHERE pub.is_active = TRUE"
+    const query = "SELECT pub.id, pub.titulo, pub.descripcion, prod.precio, prod.formato, prod.marca, prod.tipo, prod.imagen FROM publicaciones AS pub INNER JOIN productos AS prod ON pub.producto_id = prod.id WHERE pub.is_active = TRUE"
     const { rows } = await pool.query(query)
     return rows
   } catch (error) {
