@@ -26,7 +26,7 @@ app.use(morgan((tokens, req, res) => {
 app.use(cors());
 
 // Process json
-app.use(express.json())
+app.use(express.json());
 
 // Add routes
 app.use("/users", usersRoutes);
