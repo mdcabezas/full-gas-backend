@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const morgan = require("morgan");
+const path = require('path');
 app.disable("x-powered-by");
 
 // Require the routes
@@ -27,6 +28,9 @@ app.use(cors());
 
 // Process json
 app.use(express.json());
+
+// Static files
+app.use(express.static(path.join(__dirname, "public")));
 
 // Add routes
 app.use("/", usersRoutes);

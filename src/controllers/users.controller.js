@@ -11,8 +11,8 @@ const signIn = async (req, res) => {
     const { email, password } = req.body
     const {code, user, message} = await verifyCredentials(email, password)
     if (code !== 200) return res.status(code).send({message: message})
-    const token = jwt.sign({ email, usuario:user.id }, "Clave_Muy_Secreta_,_Muy_Segura_y_Muy_Larga")
-    return res.send(token)
+    const token = jwt.sign({ email, usuario:user.id }, process.env.SECRET_JWT)
+    return res.json({token, nombre:user.nombre, email:user.email})
   } catch (error) {
     console.log(error)
     return res.status(error.code || 500).send(error)
