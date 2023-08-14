@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { create, getAll, getById, updateById, deleteById } = require('../controllers/posts.controller');
+const { create, getAll, getById, updateById, deleteById, getByIdUser } = require('../controllers/posts.controller');
 const { isAuth } = require('../middlewares/auth.middleware');
 const { queryReport } = require('../middlewares/log.middleware');
 
@@ -18,5 +18,8 @@ router.put('/:id', queryReport, isAuth, updateById);
 
 // Delete
 router.delete('/:id', queryReport, deleteById);
+
+// Get by Id USer
+router.get('/user/:id', queryReport, getByIdUser);
 
 module.exports = router;

@@ -5,7 +5,7 @@ const { queryReport } = require('../middlewares/log.middleware');
 const { getAll, getById } = require('../controllers/products.controller');
 
 // Get by All
-router.get('/', queryReport, getAll);
+router.get('/', queryReport, isAuth, getAll);
 
 // Get by Id
 router.get('/:id', queryReport, getById);

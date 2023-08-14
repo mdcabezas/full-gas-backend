@@ -1,17 +1,28 @@
-const { 
+const {
   createPost,
   getAllPosts,
   getByIdPosts,
   updateByIdPosts,
-  deleteByIdPosts 
+  deleteByIdPosts,
+  getByIdUserPosts
 } = require('../models/post.model');
+
+const { createSchema } = require('../schema/posts.schema');
 
 const create = async (req, res) => {
   try {
     const reqBody = req.body;
-    const {usuario:idUsuario} = req.user
-     const item = await createPost(idUsuario, reqBody);
-     return res.status(201).json({ code: 201, message: "Publicacion creada con exito", data: item });
+    const { error } = createSchema.validate(reqBody);
+
+    console.log("error===>", error)
+    if (error) {
+      return res.status(400).json({ code: 400, message:error });
+    }
+
+    const { usuario: idUsuario } = req.user
+    const item = await createPost(idUsuario, reqBody);
+    return res.status(201).json({ code: 201, message: "Publicacion creada con exito", data: item });
+
   } catch (error) {
     console.log(error)
     return res.status(error.code || 500).send(error)
@@ -39,6 +50,17 @@ const getById = async (req, res) => {
   }
 };
 
+const getByIdUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const item = await getByIdUserPosts(id);
+    return res.json({ code: 200, message: "getByIdPosts", data: item });
+  } catch (error) {
+    console.log(error)
+    return res.status(error.code || 500).send(error)
+  }
+};
+
 const updateById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -54,12 +76,12 @@ const updateById = async (req, res) => {
 const deleteById = async (req, res) => {
   try {
     const { id } = req.params;
-    const {resultPublicacion, publicacionesActualizadas} = await deleteByIdPosts(id);
-    if (publicacionesActualizadas === 0){
-     return res.status(409).json({ code: 409, message: "Ops!.Comuniquese con la mesa de ayuda", error: resultPublicacion });
+    const { resultPublicacion, publicacionesActualizadas } = await deleteByIdPosts(id);
+    if (publicacionesActualizadas === 0) {
+      return res.status(409).json({ code: 409, message: "Ops!.Comuniquese con la mesa de ayuda", error: resultPublicacion });
     }
-    if(!Array.isArray(resultPublicacion)){
-     return res.status(500).json({ code: 500, message: "Ops!.Comuniquese con la mesa de ayuda", error: resultPublicacion });
+    if (!Array.isArray(resultPublicacion)) {
+      return res.status(500).json({ code: 500, message: "Ops!.Comuniquese con la mesa de ayuda", error: resultPublicacion });
     }
     return res.status(200).json({ code: 200, message: "Registro eliminado exitosamente", data: resultPublicacion });
   } catch (error) {
@@ -68,4 +90,4 @@ const deleteById = async (req, res) => {
   }
 };
 
-module.exports = { create, getAll, getById, updateById, deleteById };
+module.exports = { create, getAll, getById, updateById, deleteById, getByIdUser };

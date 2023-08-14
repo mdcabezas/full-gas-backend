@@ -1,18 +1,17 @@
-/* import Joi from 'joi';
+const Joi = require('joi');
 
-export const postSolicitudUsuario = Joi.object({
-    nombre: Joi.string().required(),
-    primer_apellido: Joi.string().required(),
-    segundo_apellido: Joi.string().optional(),
-    celular: Joi.string().required(),
-    correo_electronico: Joi.string().email(),
-    canal: Joi.number().required(),
-    usuario: Joi.string().required(),
-    clave: Joi.string().required(),
-    convenio: Joi.string().required(),
-    origen_solicitud: Joi.string().required(),
-    modulos: Joi.string().required(),
-    // numero_instrumento: Joi.string().required().regex(new RegExp("^[\\d]*$")).messages({
-    //     'string.pattern.base':'Solo acepta numeros'
-    // })
-}); */
+const createSchema = Joi.object({
+    titulo: Joi.string().required().messages({
+        'any.required': 'El titulo de la publicacion es obligatorio',
+        'string.empty': 'El titulo de la publicacion no puede estar vacío',
+    }),
+    descripcion: Joi.string().required().messages({
+        'any.required': 'La descripcion de la publicacion es obligatoria',
+        'string.empty': 'La descripcion de la publicacion no puede estar vacía',
+    }),
+    producto_id: Joi.number().required().messages({
+        'any.required': 'El ID del producto es obligatorio'
+    }),
+});
+
+module.exports = { createSchema };
