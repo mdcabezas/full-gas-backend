@@ -3,7 +3,8 @@ const { pool } = require('../config/db.config');
 
 const getByIdPosts = async (id) => {
   try {
-    const idPost = "SELECT pub.titulo, pub.descripcion, prod.precio, prod.formato, prod.marca, prod.tipo, prod.imagen FROM publicaciones AS pub INNER JOIN productos AS prod ON pub.producto_id = prod.id WHERE pub.id = $1"
+    // const idPost = "SELECT pub.titulo, pub.descripcion, prod.precio, prod.formato, prod.marca, prod.tipo, prod.imagen FROM publicaciones AS pub INNER JOIN productos AS prod ON pub.producto_id = prod.id WHERE pub.id = $1"
+    const idPost = "SELECT pb.usuario_id, pb.titulo, pb.descripcion, pb.created_at, u.nombre, pr.precio, pr.formato, pr.marca, pr.tipo, pr.imagen FROM publicaciones AS pb JOIN usuarios AS u ON pb.usuario_id = u.id JOIN productos AS pr ON pb.producto_id = pr.id WHERE pb.usuario_id = $1"
     const valuesIdPost = [id]
     const { rows: [resultIdPost] } = await pool.query(idPost, valuesIdPost)
     return resultIdPost
