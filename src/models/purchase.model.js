@@ -3,22 +3,6 @@ const { pool } = require('../config/db.config');
 
 const getAllByIdPurchases = async (idUsuario) => {
   try {
-    // const queryIdUserPurchases = "SELECT p.id AS producto_id, p.precio AS precio_producto, p.marca AS marca_producto, p.formato AS formato_producto, p.tipo AS tipo_producto, p.imagen AS imagen_producto, c.transaccion, c.cantidad, c.precio_total, 	pub.titulo FROM productos p JOIN publicaciones pub ON p.id = pub.producto_id JOIN compras c ON pub.id = c.publicaciones_id WHERE c.usuario_id = $1"
-    // const valuesIdUserPurchases = [idUsuario]
-    // const { rows: resultIdUserPurchase } = await pool.query(queryIdUserPurchases, valuesIdUserPurchases)
-
-    // const transaccionesAgrupadas = resultIdUserPurchase.reduce((resultado, producto) => {
-      
-    //   if (!resultado[producto.transaccion]) {
-    //     resultado[producto.transaccion] = [];
-    //   }
-    
-    //   resultado[producto.transaccion].push(producto);
-    
-    //   return resultado;
-    // }, {});
-
-    // return transaccionesAgrupadas
     const queryIdUserPurchases = "SELECT p.id AS producto_id, p.precio AS precio_producto, p.marca AS marca_producto, p.formato AS formato_producto, p.tipo AS tipo_producto, p.imagen AS imagen_producto, c.transaccion, c.cantidad, c.precio_total, c.created_at, pub.titulo FROM productos p JOIN publicaciones pub ON p.id = pub.producto_id JOIN compras c ON pub.id = c.publicaciones_id WHERE c.usuario_id = $1"
     const valuesIdUserPurchases = [idUsuario]
     const { rows: resultIdUserPurchase } = await pool.query(queryIdUserPurchases, valuesIdUserPurchases)
