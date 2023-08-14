@@ -5,7 +5,7 @@ const getByIdPosts = async (id) => {
   try {
     const idPost = "SELECT pub.titulo, pub.descripcion, prod.precio, prod.formato, prod.marca, prod.tipo, prod.imagen FROM publicaciones AS pub INNER JOIN productos AS prod ON pub.producto_id = prod.id WHERE pub.id = $1"
     const valuesIdPost = [id]
-    const { rows: resultIdPost } = await pool.query(idPost, valuesIdPost)
+    const { rows: [resultIdPost] } = await pool.query(idPost, valuesIdPost)
     return resultIdPost
   } catch (error) {
     console.log(error)
