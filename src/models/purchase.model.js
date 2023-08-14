@@ -1,44 +1,52 @@
 
 const { pool } = require('../config/db.config');
 
-const getByIdPurchases = async (id) => {
+const getAllByIdPurchases = async (idUsuario) => {
   try {
-    const idPurchase = "SELECT pub.titulo, pub.descripcion, prod.precio, prod.formato, prod.marca, prod.tipo, prod.imagen FROM publicaciones AS pub INNER JOIN productos AS prod ON pub.producto_id = prod.id WHERE pub.id = $1"
-    const valuesIdPurchase = [id]
-    const { rows: resultIdPurchase } = await pool.query(idPurchase, valuesIdPurchase)
-    return resultIdPurchase
+    const queryIdUserPurchases = "SELECT p.id AS producto_id, p.precio AS precio_producto, p.marca AS marca_producto, p.formato AS formato_producto, p.tipo AS tipo_producto, p.imagen AS imagen_producto, c.transaccion, c.cantidad, c.precio_total, 	pub.titulo FROM productos p JOIN publicaciones pub ON p.id = pub.producto_id JOIN compras c ON pub.id = c.publicaciones_id WHERE c.usuario_id = $1"
+    const valuesIdUserPurchases = [idUsuario]
+    const { rows: resultIdUserPurchase } = await pool.query(queryIdUserPurchases, valuesIdUserPurchases)
+
+    const transaccionesAgrupadas = resultIdUserPurchase.reduce((resultado, producto) => {
+      
+      console.log("producto==>", producto)
+
+      if (!resultado[producto.transaccion]) {
+        resultado[producto.transaccion] = [];
+      }
+    
+      resultado[producto.transaccion].push(producto);
+    
+      return resultado;
+    }, {});
+
+    return transaccionesAgrupadas
   } catch (error) {
     console.log(error)
     return (error)
   }
 };
 
-const createPurchase = async ({ email, titulo, descripcion, precio, formato, marca, tipo, imagen }) => {
+const createPurchase = async (idUsuario, reqBody) => {
   try {
 
-    // Buscar id usuario por email
-    const idUser = "SELECT id FROM usuarios WHERE email = $1"
-    const { rows: [{ id: idUsuario }] } = await pool.query(idUser, [email])
-    console.log("idUsuario==>", idUsuario)
+    const idTransaccion = Math.random().toString(36).substring(4, 13);
 
-    // Excepcion si no encuentra el usuario
-    if (!idUsuario) { return [] }
+    for await (const item of reqBody) {
+      const idPost = "SELECT prod.precio FROM publicaciones AS pub INNER JOIN productos AS prod ON pub.producto_id = prod.id WHERE pub.id = $1"
+      const valuesIdPost = [item.publicaciones_id]
+      const { rows: [{ precio }] } = await pool.query(idPost, valuesIdPost)
+      const query = "INSERT INTO compras (usuario_id, publicaciones_id, transaccion, cantidad, precio_total ) VALUES ($1, $2, $3, $4, $5)"
+      await pool.query(query, [idUsuario, item.publicaciones_id, idTransaccion, item.cantidad, precio * item.cantidad]);
+    }
 
-    //Crear producto
-    const insertProducto = "INSERT INTO productos VALUES (DEFAULT, $1, $2, $3, $4, $5, DEFAULT) RETURNING id"
-    const valuesProducto = [precio, marca, formato, tipo, imagen]
-    const { rows: [{ id: idProducto }] } = await pool.query(insertProducto, valuesProducto)
-    console.log("idProducto==>", idProducto)
-
-    // Crear publicacion utilizando id del producto creado
-    const insertPublicacion = "INSERT INTO publicaciones VALUES (DEFAULT, $1, $2, $3, $4, DEFAULT, DEFAULT) RETURNING *"
-    const valuesPublicacion = [idUsuario, idProducto, titulo, descripcion]
-    const { rows: resultPublicacion } = await pool.query(insertPublicacion, valuesPublicacion)
-    console.log("resultPublicacion==>", resultPublicacion)
-    return resultPublicacion
+    const queryComprasIdTransaccion = "SELECT * FROM compras WHERE usuario_id = $1 AND transaccion = $2"
+    const valuesIdTransaccion = [idUsuario, idTransaccion]
+    const { rows: resultComprasIdTransaccion } = await pool.query(queryComprasIdTransaccion, valuesIdTransaccion)
+    return resultComprasIdTransaccion
   } catch (error) {
     return (error)
   }
 };
 
-module.exports = { createPurchase, getByIdPurchases };
+module.exports = { createPurchase, getAllByIdPurchases };

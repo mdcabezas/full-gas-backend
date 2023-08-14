@@ -9,6 +9,7 @@ app.disable("x-powered-by");
 const usersRoutes = require("./routes/users.routes.js");
 const postsRoutes = require("./routes/posts.routes.js");
 const productsRoutes = require("./routes/products.routes.js");
+const purchasesRoutes = require("./routes/purchases.routes.js");
 
 //Request Logs
 app.use(morgan((tokens, req, res) => {
@@ -31,6 +32,8 @@ app.use(express.json())
 app.use("/", usersRoutes);
 app.use("/posts", postsRoutes);
 app.use("/products", productsRoutes);
+app.use("/purchases", purchasesRoutes);
+
 app.use('*', (_, res) => res.status(404).json({ code: 404, message: "Esta ruta no existe" }));
 
 module.exports = app;

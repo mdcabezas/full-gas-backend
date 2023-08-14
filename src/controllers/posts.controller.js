@@ -9,7 +9,8 @@ const {
 const create = async (req, res) => {
   try {
     const reqBody = req.body;
-     const item = await createPost(reqBody);
+    const {usuario:idUsuario} = req.user
+     const item = await createPost(idUsuario, reqBody);
      return res.status(201).json({ code: 201, message: "Publicacion creada con exito", data: item });
   } catch (error) {
     console.log(error)

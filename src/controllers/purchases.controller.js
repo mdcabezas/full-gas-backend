@@ -1,23 +1,30 @@
 const {
   createPurchase,
-  getByIdPurchases
+  getAllByIdPurchases
 } = require('../models/purchase.model');
 
 const create = async (req, res) => {
   try {
     const reqBody = req.body;
-    const item = await createPurchase(reqBody);
-    return res.status(201).json({ code: 201, message: "Publicacion creada con exito", data: item });
+    const {usuario:idUsuario} = req.user
+    if(!idUsuario){
+    return res.status(401).json({ code: 401, message: "Proporcionar credenciales para acceder al recurso.", data: {} });  
+    }
+    const item = await createPurchase(idUsuario, reqBody);
+    return res.status(201).json({ code: 201, message: "Compra creada con exito", data: item });
   } catch (error) {
     console.log(error)
     return res.status(error.code || 500).send(error)
   }
 };
 
-const getById = async (req, res) => {
+const getAllById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const item = await getByIdPurchases(id);
+    const {usuario:idUsuario} = req.user
+    if(!idUsuario){
+      return res.status(401).json({ code: 401, message: "Proporcionar credenciales para acceder al recurso.", data: {} });  
+      }
+    const item = await getAllByIdPurchases(idUsuario);
     return res.json({ code: 200, message: "getByIdPurchases", data: item });
   } catch (error) {
     console.log(error)
@@ -25,4 +32,4 @@ const getById = async (req, res) => {
   }
 };
 
-module.exports = { create, getAll, getById, updateById, deleteById };
+module.exports = { create, getAllById };

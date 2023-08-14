@@ -9,8 +9,9 @@ const signUp = async (req, res) => {
 const signIn = async (req, res) => {
   try {
     const { email, password } = req.body
-    await verifyCredentials(email, password)
-    const token = jwt.sign({ email }, "Clave_Muy_Secreta_,_Muy_Segura_y_Muy_Larga")
+    const {code, user, message} = await verifyCredentials(email, password)
+    if (code !== 200) return res.status(code).send({message: message})
+    const token = jwt.sign({ email, usuario:user.id }, "Clave_Muy_Secreta_,_Muy_Segura_y_Muy_Larga")
     return res.send(token)
   } catch (error) {
     console.log(error)

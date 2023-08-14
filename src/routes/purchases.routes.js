@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { create, getById } = require('../controllers/purchases.controller');
+const { create, getAllById } = require('../controllers/purchases.controller');
 const { isAuth } = require('../middlewares/auth.middleware');
 const { queryReport } = require('../middlewares/log.middleware');
 
 // Create
-router.post('/', queryReport, isAuth, create);
+router.post('/', isAuth, create);
 
-// Get by Id
-router.get('/:id', queryReport, getById);
+// Get by Id U
+router.get('/', isAuth, getAllById);
 
 module.exports = router;

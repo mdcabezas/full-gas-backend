@@ -14,7 +14,7 @@ router.get('/', queryReport, getAll);
 router.get('/:id', queryReport, getById);
 
 // Update
-router.put('/:id', queryReport, updateById);
+router.put('/:id', queryReport, isAuth, updateById);
 
 // Delete
 router.delete('/:id', queryReport, deleteById);
