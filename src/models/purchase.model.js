@@ -19,8 +19,8 @@ const getAllByIdPurchases = async (idUsuario) => {
     // }, {});
 
     // return transaccionesAgrupadas
-    const queryComprasIdTransaccion = "SELECT * FROM compras WHERE usuario_id = $1 AND transaccion = $2"
-    const valuesIdTransaccion = [idUsuario, idTransaccion]
+    const queryComprasIdTransaccion = "SELECT * FROM compras WHERE usuario_id = $1"
+    const valuesIdTransaccion = [idUsuario]
     const { rows: resultComprasIdTransaccion } = await pool.query(queryComprasIdTransaccion, valuesIdTransaccion)
     return resultComprasIdTransaccion
 
