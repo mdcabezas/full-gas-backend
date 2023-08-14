@@ -29,7 +29,7 @@ app.use(cors());
 app.use(express.json())
 
 // Add routes
-app.use("/", usersRoutes);
+app.use("/users", usersRoutes);
 app.use("/posts", postsRoutes);
 app.use("/products", productsRoutes);
 app.use("/purchases", purchasesRoutes);
