@@ -19,11 +19,10 @@ const getAllByIdPurchases = async (idUsuario) => {
     // }, {});
 
     // return transaccionesAgrupadas
-    const queryComprasIdTransaccion = "SELECT * FROM compras WHERE usuario_id = $1"
-    const valuesIdTransaccion = [idUsuario]
-    const { rows: resultComprasIdTransaccion } = await pool.query(queryComprasIdTransaccion, valuesIdTransaccion)
-    return resultComprasIdTransaccion
-
+    const queryIdUserPurchases = "SELECT p.id AS producto_id, p.precio AS precio_producto, p.marca AS marca_producto, p.formato AS formato_producto, p.tipo AS tipo_producto, p.imagen AS imagen_producto, c.transaccion, c.cantidad, c.precio_total, c.created_at, pub.titulo FROM productos p JOIN publicaciones pub ON p.id = pub.producto_id JOIN compras c ON pub.id = c.publicaciones_id WHERE c.usuario_id = $1"
+    const valuesIdUserPurchases = [idUsuario]
+    const { rows: resultIdUserPurchase } = await pool.query(queryIdUserPurchases, valuesIdUserPurchases)
+    return resultIdUserPurchase
   } catch (error) {
     console.log(error)
     return (error)
